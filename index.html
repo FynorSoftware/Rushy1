@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>90Dakika - Galatasaray vs Göztepe Canlı Yayın</title>
+
+  <!-- Video.js CSS -->
+  <link href="https://vjs.zencdn.net/7.21.1/video-js.css" rel="stylesheet" />
+
+  <style>
+    /* Reset ve temel */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    header {
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+    header .main-title {
+      font-size: 2rem;
+      font-weight: 700;
+      text-align: center;
+      flex: 1;
+      margin: 0 1rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+    }
+    header .channel-invite {
+      font-weight: 600;
+      font-size: 1.1rem;
+      user-select: text;
+    }
+    header .channel-invite a {
+      color: #ffd54f;
+      text-decoration: none;
+      font-weight: 700;
+      margin-left: 0.5rem;
+      transition: color 0.3s;
+    }
+    header .channel-invite a:hover,
+    header .channel-invite a:focus {
+      color: #fff176;
+      text-decoration: underline;
+      outline: none;
+    }
+
+    /* Ana içerik */
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      margin: 2rem;
+      min-height: 70vh;
+      backdrop-filter: blur(10px);
+    }
+
+    /* Video oynatıcı container */
+    #player-container {
+      width: 100%;
+      max-width: 1400px;
+      background: #000;
+      border-radius: 16px;
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+    .video-js {
+      width: 100% !important;
+      height: 75vh !important;
+      max-height: 800px;
+      background: black;
+      border-radius: 16px;
+      position: relative;
+    }
+
+    /* Logo overlay video oynatıcı içinde, sağ alt köşede - normal mod için artırıldı */
+    .vjs-logo-overlay {
+      position: absolute;
+      bottom: 100px; /* Normal modda yukarı çekildi */
+      right: 3%;
+      width: 15%;
+      height: auto;
+      opacity: 0.95;
+      pointer-events: none;
+      filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.7));
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 10px;
+      z-index: 10;
+      transition: opacity 0.3s ease, bottom 0.3s ease;
+    }
+
+    /* Yayın kesintisi mesajı */
+    #error-message {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 1.8rem;
+      background: rgba(0,0,0,0.8);
+      padding: 1.5rem 2.5rem;
+      border-radius: 16px;
+      display: none;
+      z-index: 10000;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+    }
+
+    /* Mobilde düzenlemeler */
+    @media (max-width: 900px) {
+      header {
+        flex-direction: column;
+        text-align: center;
+        padding: 1rem;
+      }
+      header .main-title {
+        font-size: 1.5rem;
+        margin: 1rem 0;
+      }
+      main {
+        padding: 1rem;
+        margin: 1rem;
+      }
+      .video-js {
+        height: 55vh !important;
+      }
+      .vjs-logo-overlay {
+        width: 20%; /* Mobilde biraz daha büyük */
+        bottom: 80px; /* Mobilde yukarı alındı */
+        right: 3%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 class="main-title">Galatasaray - Göztepe</h1>
+    <div class="channel-invite">
+      Kanalımıza katılın:
+      <a href="https://t.me/golkrali1" target="_blank" rel="noopener noreferrer" aria-label="Golkrali1 Telegram Kanalı">Golkrali1 Telegram</a>
+    </div>
+  </header>
+  <main>
+    <section id="player-container" aria-label="Video Oynatıcı">
+      <video
+        id="video-player"
+        class="video-js vjs-default-skin"
+        controls
+        preload="auto"
+        playsinline
+        data-setup='{}'
+      ></video>
+      <div id="error-message" role="alert" aria-live="assertive">Yayın şu anda kesintide. Lütfen daha sonra tekrar deneyin.</div>
+    </section>
+  </main>
+
+  <!-- Video.js JS -->
+  <script src="https://vjs.zencdn.net/7.21.1/video.min.js"></script>
+
+  <script>
+    // Tek kanal: Galatasaray - Göztepe maçı için 90Dakika
+    const channel = {
+      name: "90Dakika - Galatasaray vs Göztepe",
+      url: "https://biraz.5480033.xyz/checklist/androstreamlivebiraz1.m3u8",
+      logo: "cg.png",
+      subtitle: "Canlı Maç Yayını"
+    };
+
+    const player = videojs('video-player');
+    const errorMessage = document.getElementById('error-message');
+
+    // Kanal yükleme fonksiyonu - Kesintisiz yayın için iyileştirildi
+    function loadChannel() {
+      errorMessage.style.display = 'none';
+      errorMessage.textContent = 'Yayın şu anda kesintide. Lütfen daha sonra tekrar deneyin.';
+
+      player.src({
+        src: channel.url,
+        type: 'application/x-mpegURL'
+      });
+
+      player.one('loadstart', () => { errorMessage.style.display = 'none'; });
+      player.one('canplay', () => { errorMessage.style.display = 'none'; });
+      player.on('waiting', () => { errorMessage.style.display = 'none'; });
+
+      player.one('error', () => {
+        console.error('Video yükleme hatası:', player.error());
+        errorMessage.style.display = 'block';
+      });
+
+      player.ready(() => {
+        player.play().catch((err) => { console.error('Oynatma hatası:', err); });
+      });
+    }
+
+    loadChannel();
+
+    // Video.js player elementini seç
+    const playerEl = document.querySelector('.video-js');
+
+    // Logo overlay oluştur ve video-js içine ekle
+    const logoUrl = 'cg.png';
+    const logoImg = document.createElement('img');
+    logoImg.src = logoUrl;
+    logoImg.alt = '90Dakika Logo';
+    logoImg.className = 'vjs-logo-overlay';
+    playerEl.appendChild(logoImg);
+
+    // Tam ekran değişiminde logo pozisyonunu ayarla
+    player.on('fullscreenchange', () => {
+      if (player.isFullscreen()) {
+        logoImg.style.bottom = '35px'; // tam ekran
+      } else {
+        logoImg.style.bottom = '100px'; // normal modda yukarı
+      }
+    });
+
+    // Ek hata yönetimi
+    player.on('error', () => {
+      const error = player.error();
+      if (error && error.code === 4) { // MEDIA_ERR_SRC_NOT_SUPPORTED
+        errorMessage.textContent = 'Yayın linki desteklenmiyor. Lütfen başka bir kanal deneyin.';
+        errorMessage.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+  </html>
