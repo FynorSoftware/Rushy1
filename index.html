@@ -96,23 +96,6 @@
       position: relative;
     }
 
-    /* Logo overlay video oynatıcı içinde, sağ alt köşede - normal mod için artırıldı */
-    .vjs-logo-overlay {
-      position: absolute;
-      bottom: 100px; /* Normal modda yukarı çekildi */
-      right: 3%;
-      width: 15%;
-      height: auto;
-      opacity: 0.95;
-      pointer-events: none;
-      filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.7));
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.95);
-      padding: 10px;
-      z-index: 10;
-      transition: opacity 0.3s ease, bottom 0.3s ease;
-    }
-
     /* Yayın kesintisi mesajı */
     #error-message {
       position: absolute;
@@ -147,11 +130,6 @@
       }
       .video-js {
         height: 55vh !important;
-      }
-      .vjs-logo-overlay {
-        width: 20%; /* Mobilde biraz daha büyük */
-        bottom: 80px; /* Mobilde yukarı alındı */
-        right: 3%;
       }
     }
   </style>
@@ -219,26 +197,6 @@
 
     loadChannel();
 
-    // Video.js player elementini seç
-    const playerEl = document.querySelector('.video-js');
-
-    // Logo overlay oluştur ve video-js içine ekle
-    const logoUrl = 'cg.png';
-    const logoImg = document.createElement('img');
-    logoImg.src = logoUrl;
-    logoImg.alt = '90Dakika Logo';
-    logoImg.className = 'vjs-logo-overlay';
-    playerEl.appendChild(logoImg);
-
-    // Tam ekran değişiminde logo pozisyonunu ayarla
-    player.on('fullscreenchange', () => {
-      if (player.isFullscreen()) {
-        logoImg.style.bottom = '35px'; // tam ekran
-      } else {
-        logoImg.style.bottom = '100px'; // normal modda yukarı
-      }
-    });
-
     // Ek hata yönetimi
     player.on('error', () => {
       const error = player.error();
@@ -249,4 +207,4 @@
     });
   </script>
 </body>
-  </html>
+</html>
